@@ -1,0 +1,73 @@
+// Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+//application models
+model User {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String
+  students  Student[]
+}
+
+model Student {
+  id            Int            @id @default(autoincrement())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  firstName     String
+  lastName      String
+  email         String         @unique
+  interventions Intervention[]
+  iepprogress   IEPProgress[]
+  services      Service[]
+  caseManager   User           @relation(fields: [userId], references: [id])
+  userId        Int
+}
+
+model Intervention {
+  id              Int        @id @default(autoincrement())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  title           String
+  description     String
+  provider        String
+  setting         String
+  dateImplemented DateTime[]
+  student         Student    @relation(fields: [studentId], references: [id])
+  studentId       Int
+}
+
+model IEPProgress {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  goal      String
+  objective String
+  progress  Boolean
+  details   String
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId Int
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  type        String
+  coordinator String
+  description String
+  student     Student  @relation(fields: [studentId], references: [id])
+  studentId   Int
+}
