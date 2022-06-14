@@ -7,14 +7,16 @@ import {
   LinkBox,
   LinkOverlay,
   ListIcon,
+  Text,
 } from "@chakra-ui/layout";
 import NextLink from "next/link";
 import {
   MdHome,
   MdSearch,
   MdSchool,
-  MdPeople,
   MdDataExploration,
+  MdPerson,
+  MdSupport,
 } from "react-icons/md";
 import { useStudent } from "../lib/hooks";
 
@@ -31,15 +33,17 @@ const sidebarMenu = [
     route: "/search",
   },
   {
-    name: "All Students",
+    name: "Students",
     icon: MdSchool,
     route: "/students",
   },
   {
-    name: "Data Views",
+    name: "Dashboard",
     icon: MdDataExploration,
     route: "/dataViews",
   },
+  { name: "My Settings", icon: MdPerson, route: "/userSettings" },
+  { name: "Insights", icon: MdSupport, route: "/support" },
 ];
 
 // this is a functional component
@@ -49,52 +53,40 @@ function Sidebar(params) {
   const { students } = useStudent();
 
   return (
-    <Box width="75%" height="100vh" paddingX="5px" color="grey" bg="lightGrey">
-      Shell
-      <Box paddingY="20px" height="100%">
-        <Box width="175px" marginBottom="10px" paddingX="20px">
-          <List spacing={2}>
-            {sidebarMenu.map((menu) => (
-              <ListItem paddingX="2px" fontSize="16px" key={menu.name}>
-                <LinkBox>
-                  <NextLink href={menu.route} passHref>
-                    <LinkOverlay>
-                      <ListIcon
-                        as={menu.icon}
-                        color="white"
-                        marginRight="20px"
-                      />
-                      {menu.name}
-                    </LinkOverlay>
-                  </NextLink>
-                </LinkBox>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-        <Divider />
-        <Box height="50%" overflowY="auto" paddingY="20px">
-          My Current Students
-          <List spacing={2}>
-            {students.map((student) => (
-              <ListItem paddingX="20px" key={student.id}>
-                <LinkBox>
-                  <NextLink
-                    href={{
-                      pathname: "/userStudents/[id]",
-                      query: { id: student.id },
-                    }}
-                    passHref
-                  >
-                    <LinkOverlay>
-                      {student.lastName},{student.firstName}
-                    </LinkOverlay>
-                  </NextLink>
-                </LinkBox>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+    <Box>
+      <input
+        type="text"
+        id="first"
+        name="first"
+        className="m-3 w-50 mb-5 block border rounded"
+        placeholder="Quick search..."
+      />
+      <Box height="50%" overflowY="auto" paddingY="20px">
+        <div className="m-3 text-xl font-medium text-slate-500">
+          My Students
+        </div>
+        <List spacing={2}>
+          {students.map((student) => (
+            <ListItem
+              className="m-3 text-lg font-medium text-slate-400"
+              key={student.id}
+            >
+              <LinkBox>
+                <NextLink
+                  href={{
+                    pathname: "/userStudents/[id]",
+                    query: { id: student.id },
+                  }}
+                  passHref
+                >
+                  <LinkOverlay>
+                    {student.lastName},{student.firstName}
+                  </LinkOverlay>
+                </NextLink>
+              </LinkBox>
+            </ListItem>
+          ))}
+        </List>
       </Box>
     </Box>
   );

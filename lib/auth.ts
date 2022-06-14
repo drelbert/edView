@@ -17,7 +17,7 @@ export const validateRoute = function validate(handler) {
     // try to get a user from the token
     if (token) {
       let user;
-      // keep the app from cashing due to a bad token
+      // keep the app from crashing due to a bad token
       try {
         const { id } = jwt.verify(token, "resetThis");
         user = await prisma.user.findUnique({
@@ -29,18 +29,19 @@ export const validateRoute = function validate(handler) {
         }
       } catch (error) {
         res.status(401);
-        res.json({ error: "No token, no valid user." });
+        res.json({ error: "Not Authorized." });
         return;
       }
       // passing the user along to the next handler
       return handler(req, res, user);
     }
     res.status(401);
-    res.json({ error: "No valid token." });
+    res.json({ error: "Not Authorized, no valid token." });
   };
 };
 
-// for use with user/students[] to pass the id to get the user's students
+// for user/students[] to pass the id to get the user's students
+// and used api/manageStudent/index
 export const validateToken = function getStudentsByUser(token) {
   // get the user via jwt.verify
   const user = jwt.verify(token, "resetThis");

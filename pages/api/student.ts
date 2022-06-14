@@ -12,6 +12,6 @@ export default validateRoute(async (req, res, student) => {
       lastName: "asc",
     },
   });
-  // send the studnets back
+  // send the students back
   res.json(students);
 });

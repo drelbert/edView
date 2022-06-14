@@ -1,43 +1,47 @@
 import prisma from "../lib/prisma";
-import { SimpleGrid, Badge, Flex, Avatar, Box, Text } from "@chakra-ui/react";
-import { MdPerson } from "react-icons/md";
 import { useUser } from "../lib/hooks";
+import { GetServerSideProps } from "next";
 
-function Students({ students }) {
+export default function Students({ students }) {
   const { user } = useUser();
 
   return (
-    <Box paddingX="20px">
-      <Box marginBottom="40px">
-        <Text fontSize="2xl" fontWeight="bold">
-          Students - {`${user?.studentCount}`} assigned to you
-        </Text>
-      </Box>
-      <SimpleGrid minChildWidth="200px" spacing="20px">
-        {students.map((student) => (
-          <Box paddingX="10px" width="100%" key={student.id}>
-            <Box bg="gray.400" borderRadius="4px" padding="15px" width="100%">
-              <Avatar as={MdPerson} borderRadius="100%" />
-              <Box fontSize="large">{student.lastName}</Box>
-              <Box>{student.firstName}</Box>
-            </Box>
-          </Box>
-        ))}
-      </SimpleGrid>
-    </Box>
+    <div>
+      <div>Students - {`${user?.studentCount}`} assigned to you</div>
+
+      <div className="w-2/5">
+        <div>
+          <dl>
+            {students.map((student) => (
+              <div className="my-4 bg-gray-100 px-1 py-5 ">
+                <dt className="w-1/4 md:w-full text-md font-medium text-gray-500">
+                  {" "}
+                  {student.lastName}, {student.firstName}
+                </dt>
+                <button
+                  type="submit"
+                  className="mx-10 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Select
+                </button>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
   );
 }
 
-export const getServerSideProps = async function getStudentProps() {
-  const students = await prisma.student.findMany({
-    orderBy: {
-      lastName: "asc",
-    },
-  });
-  // console.log(students);
-  return {
-    props: { students },
+export const getServerSideProps: GetServerSideProps =
+  async function getStudentProps() {
+    const students = await prisma.student.findMany({
+      orderBy: {
+        lastName: "asc",
+      },
+    });
+    // console.log(students);
+    return {
+      props: { students },
+    };
   };
-};
-
-export default Students;

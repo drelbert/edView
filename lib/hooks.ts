@@ -4,6 +4,7 @@ import fetcher from "./fetcher";
 // set of custom hooks
 
 // first hook to get the user at /getUser
+// note SWR in use!!!
 export const useUser = function user() {
   // internal hook with destructured data and error
   // swr hook library for client side data fetching and then stores it locally (redux like) in cache
@@ -30,6 +31,7 @@ export const useService = function service() {
 // third hook to get student(s) at /student
 export const useStudent = function student() {
   // using types via Prisma
+  // note SWR in use!!!
   const { data, error } = useSWR("/student", fetcher);
 
   return {
@@ -39,7 +41,7 @@ export const useStudent = function student() {
   };
 };
 
-// third hook to get interentions
+// fourth hook to get interventions
 export const useIntervention = function intervention() {
   // using types via Prisma
   const { data, error } = useSWR("/intervention", fetcher);

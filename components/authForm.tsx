@@ -38,14 +38,16 @@ const AuthForm: FC<{ mode: "signin" | "signup" }> = function authForm({
       <Flex justify="center" align="center" height="calc(75vh - 100px)">
         <Box padding="center" borderRadius="6px" width="calc(45vh - 50px)">
           <form onSubmit={handleSubmit}>
-            <Input
+            <input
               placeholder="email"
               type="email"
+              className="w-70 mb-5 block"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Input
+            <input
               placeholder="password"
               type="password"
+              className="w-70 mb-5 block"
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button

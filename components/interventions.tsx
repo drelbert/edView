@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import { Table, Thead, Td, Tr, Tbody, Th } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { useIntervention } from "../lib/hooks";
 
 function Interventions(params) {
@@ -31,11 +32,22 @@ function Interventions(params) {
               >
                 <Td>{intervention.title}</Td>
                 <Td>{intervention.description}</Td>
-                <Td>
-                  {intervention.student.lastName},
-                  {intervention.student.firstName}
-                </Td>
+
+                <NextLink
+                  href={{
+                    pathname: "/userStudents/[id]",
+                    query: { id: intervention.studentId },
+                  }}
+                  passHref
+                >
+                  <td className="underline text-blue-600 hover:text-blue-700 cursor-pointer">
+                    {intervention.student.lastName},
+                    {intervention.student.firstName}
+                  </td>
+                </NextLink>
+
                 <Td>{intervention.provider}</Td>
+                <Td>{intervention.updatedAt}</Td>
               </Tr>
             ))}
           </Tbody>

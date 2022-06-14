@@ -1,3 +1,4 @@
+// purpose of this function is to abstract away the http fetching mechanism
 export default function fetcher(url: string, data = undefined) {
   return fetch(`${window.location.origin}/api${url}`, {
     method: data ? "POST" : "GET",
