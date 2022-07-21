@@ -1,9 +1,8 @@
-import { detectContentType } from "next/dist/server/image-optimizer";
 import { useState } from "react";
 
 // this component is about sharing state between components
 // state lifted up to this common parent for Panels
-// this is an uncontralled component, driven by state
+// this is an uncontrolled component, driven by state
 export default function Accordion() {
   const [activeIndex, setActiveIndex] = useState(0);
 

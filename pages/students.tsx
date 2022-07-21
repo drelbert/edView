@@ -32,7 +32,7 @@ export default function Students({ students }) {
     </div>
   );
 }
-
+// server-side rendering with this function
 export const getServerSideProps: GetServerSideProps =
   async function getStudentProps() {
     const students = await prisma.student.findMany({
